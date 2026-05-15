@@ -23,6 +23,8 @@ import SiteHeader from "./components/SiteHeader";
 
 import MoviesContextProvider from "./contexts/moviesContext";
 import AddMovieReviewPage from "./pages/AddMovieReviewPage";
+import ActorsPage from "./pages/ActorsPage";
+import ActorDetailsPage from "./pages/ActorDetailsPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -70,6 +72,9 @@ const App = () => {
               path="*"
               element={<Navigate to="/" />}
             />
+
+            <Route path="/actors" element={<ActorsPage />} />
+<Route path="/actors/:id" element={<ActorDetailsPage />} />
           </Routes>
         </MoviesContextProvider>
       </BrowserRouter>
