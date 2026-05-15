@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import type { ChangeEvent } from "react";
 import type { SelectChangeEvent } from "@mui/material";
 import type { FilterOption } from "../types/movieAppTypes";
-
+import { getGenres } from "../api/tmdb-api";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -41,17 +41,10 @@ const FilterMoviesCard = ({
   ]);
 
   useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/genre/movie/list?api_key=${
-        import.meta.env.VITE_TMDB_KEY
-      }`
-    )
-      .then((res) => res.json())
-      .then((json) => json.genres)
-      .then((apiGenres) => {
-        setGenres([{ id: "0", name: "All" }, ...apiGenres]);
-      });
-  }, []);
+  getGenres().then((allGenres) => {
+    setGenres([{ id: "0", name: "All" }, ...allGenres]);
+  });
+}, []);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement> | SelectChangeEvent,

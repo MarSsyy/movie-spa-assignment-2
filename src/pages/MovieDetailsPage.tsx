@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+
 import type {
   MovieDetailsProps,
   MovieImage,
 } from "../types/movieAppTypes";
+
+import { getMovie, getMovieImages } from "../api/tmdb-api";
 
 import MovieHeader from "../components/HeaderMovie";
 import MovieDetails from "../components/MovieDetails";
@@ -31,28 +34,15 @@ const MoviePage = () => {
   const [images, setImages] = useState<MovieImage[]>([]);
 
   useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/movie/${id}?api_key=${
-        import.meta.env.VITE_TMDB_KEY
-      }`
-    )
-      .then((res) => res.json())
-      .then((movie) => {
-        setMovie(movie);
-      });
+    getMovie(id ?? "").then((movie) => {
+      setMovie(movie);
+    });
   }, [id]);
 
   useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/movie/${id}/images?api_key=${
-        import.meta.env.VITE_TMDB_KEY
-      }`
-    )
-      .then((res) => res.json())
-      .then((json) => json.posters)
-      .then((images) => {
-        setImages(images);
-      });
+    getMovieImages(id ?? "").then((images) => {
+      setImages(images);
+    });
   }, [id]);
 
   return (
@@ -63,22 +53,20 @@ const MoviePage = () => {
 
           <Grid container spacing={5} style={{ padding: "15px" }}>
             <Grid size={3}>
-              <div>
-                <ImageList sx={styles.imageListRoot} cols={1}>
-                  {images.map((image) => (
-                    <ImageListItem
-                      key={image.file_path}
-                      sx={styles.gridListTile}
-                      cols={1}
-                    >
-                      <img
-                        src={`https://image.tmdb.org/t/p/w500/${image.file_path}`}
-                        alt="Movie poster"
-                      />
-                    </ImageListItem>
-                  ))}
-                </ImageList>
-              </div>
+              <ImageList sx={styles.imageListRoot} cols={1}>
+                {images.map((image) => (
+                  <ImageListItem
+                    key={image.file_path}
+                    sx={styles.gridListTile}
+                    cols={1}
+                  >
+                    <img
+                      src={`https://image.tmdb.org/t/p/w500/${image.file_path}`}
+                      alt="Movie poster"
+                    />
+                  </ImageListItem>
+                ))}
+              </ImageList>
             </Grid>
 
             <Grid size={9}>
