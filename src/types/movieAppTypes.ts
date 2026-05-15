@@ -1,6 +1,7 @@
 // src/types/movieAppTypes.ts
-
+import type React from "react";
 import type { paths } from "./generated/tmdb";
+
 
 export type DiscoverMoviesProps =
   paths["/3/discover/movie"]["get"]["responses"][200]["content"]["application/json"];
@@ -12,6 +13,7 @@ export type DiscoverMovieOverviewProps =
 
 export type BaseMovieListProps = {
   movies: DiscoverMovieOverviewProps[];
+  action: (movie: DiscoverMovieOverviewProps) => React.ReactNode;
 };
 
 export type MovieDetailsProps =

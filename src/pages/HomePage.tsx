@@ -10,6 +10,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import Spinner from "../components/Spinner";
 
+import AddToFavoritesIcon from "../components/cardIcons/addToFavorites";
+
 const HomePage = () => {
   const {
     data,
@@ -38,6 +40,9 @@ const HomePage = () => {
     <PageTemplate
       title="Discover Movies"
       movies={movies}
+      action={(movie) => (
+        <AddToFavoritesIcon movie={movie} />
+      )}
     />
   );
 };

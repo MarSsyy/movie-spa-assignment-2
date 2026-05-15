@@ -28,6 +28,7 @@ const styles = {
 const MovieListPageTemplate = ({
   movies,
   title,
+  action,
 }: MovieListPageTemplateProps) => {
   const [titleFilter, setTitleFilter] = useState("");
   const [genreFilter, setGenreFilter] = useState("0");
@@ -37,15 +38,25 @@ const MovieListPageTemplate = ({
 
   const displayedMovies = movies
     .filter((m) =>
-      (m.title ?? "").toLowerCase().includes(titleFilter.toLowerCase())
+      (m.title ?? "")
+        .toLowerCase()
+        .includes(titleFilter.toLowerCase())
     )
     .filter((m) =>
-      genreId > 0 ? m.genre_ids?.includes(genreId) : true
+      genreId > 0
+        ? m.genre_ids?.includes(genreId)
+        : true
     );
 
-  const handleChange = (type: FilterOption, value: string) => {
-    if (type === "title") setTitleFilter(value);
-    else setGenreFilter(value);
+  const handleChange = (
+    type: FilterOption,
+    value: string
+  ) => {
+    if (type === "title") {
+      setTitleFilter(value);
+    } else {
+      setGenreFilter(value);
+    }
   };
 
   return (
@@ -55,9 +66,12 @@ const MovieListPageTemplate = ({
           <Header title={title} />
         </Grid>
 
-       <Grid container spacing={5} size={12}>
-        <MovieList movies={displayedMovies} />
-       </Grid>
+        <Grid container spacing={5} size={12}>
+          <MovieList
+            movies={displayedMovies}
+            action={action}
+          />
+        </Grid>
       </Grid>
 
       <Fab

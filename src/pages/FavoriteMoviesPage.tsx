@@ -10,6 +10,9 @@ import { getMovie } from "../api/tmdb-api";
 
 import Spinner from "../components/Spinner";
 
+import RemoveFromFavorites from "../components/cardIcons/removeFromFavorites";
+import WriteReview from "../components/cardIcons/writeReview";
+
 const FavoriteMoviesPage = () => {
   const { favourites: movieIds } =
     useContext(MoviesContext);
@@ -38,6 +41,12 @@ const FavoriteMoviesPage = () => {
     <PageTemplate
       title="Favourite Movies"
       movies={movies}
+      action={(movie) => (
+        <>
+          <RemoveFromFavorites movie={movie} />
+          <WriteReview movie={movie} />
+        </>
+      )}
     />
   );
 };
