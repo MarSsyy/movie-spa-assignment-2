@@ -34,26 +34,10 @@ const HomePage = () => {
 
   const movies = data ?? [];
 
-  // temporary favourites storage
-  const favourites = movies.filter(
-    (m) => m.favourite
-  );
-
-  localStorage.setItem(
-    "favourites",
-    JSON.stringify(favourites)
-  );
-
-  // temporary dummy function
-  const addToFavourites = (
-    movieId: number
-  ) => true;
-
   return (
     <PageTemplate
       title="Discover Movies"
       movies={movies}
-      selectFavourite={addToFavourites}
     />
   );
 };

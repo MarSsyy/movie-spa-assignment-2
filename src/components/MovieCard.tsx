@@ -1,3 +1,8 @@
+import {
+  useContext,
+  type MouseEvent,
+} from "react";
+
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -14,14 +19,16 @@ import Avatar from "@mui/material/Avatar";
 
 import img from "../images/film-poster-placeholder.png";
 
-import type { MouseEvent } from "react";
-import type { DiscoverMovieOverviewProps } from "../types/movieAppTypes";
+import type {
+  DiscoverMovieOverviewProps,
+} from "../types/movieAppTypes";
 
 import { Link } from "react-router-dom";
 
+import { MoviesContext } from "../contexts/moviesContext";
+
 interface MovieCardProps {
   movie: DiscoverMovieOverviewProps;
-  selectFavourite: (movieId: number) => void;
 }
 
 const styles = {
@@ -32,19 +39,29 @@ const styles = {
   },
 };
 
-const MovieCard = ({ movie, selectFavourite }: MovieCardProps) => {
+const MovieCard = ({ movie }: MovieCardProps) => {
+  const {
+    favourites,
+    addToFavourites,
+  } = useContext(MoviesContext);
+
+  const isFavourite =
+    favourites.find((id) => id === movie.id)
+      ? true
+      : false;
+
   const handleAddToFavourite = (
     e: MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
-    selectFavourite(movie.id);
+    addToFavourites(movie);
   };
 
   return (
     <Card sx={styles.card}>
       <CardHeader
         avatar={
-          movie.favourite ? (
+          isFavourite ? (
             <Avatar sx={styles.avatar}>
               <FavoriteIcon />
             </Avatar>
@@ -90,11 +107,18 @@ const MovieCard = ({ movie, selectFavourite }: MovieCardProps) => {
           aria-label="add to favorites"
           onClick={handleAddToFavourite}
         >
-          <FavoriteIcon color="primary" fontSize="large" />
+          <FavoriteIcon
+            color="primary"
+            fontSize="large"
+          />
         </IconButton>
 
         <Link to={`/movies/${movie.id}`}>
-          <Button variant="outlined" size="medium" color="primary">
+          <Button
+            variant="outlined"
+            size="medium"
+            color="primary"
+          >
             More Info ...
           </Button>
         </Link>

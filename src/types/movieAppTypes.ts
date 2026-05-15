@@ -1,4 +1,4 @@
-// src/types/tmdb.ts
+// src/types/movieAppTypes.ts
 
 import type { paths } from "./generated/tmdb";
 
@@ -12,7 +12,6 @@ export type DiscoverMovieOverviewProps =
 
 export type BaseMovieListProps = {
   movies: DiscoverMovieOverviewProps[];
-  selectFavourite: (movieId: number) => void;
 };
 
 export type MovieDetailsProps =
@@ -37,11 +36,14 @@ export type MoviePageProps = {
 
 export type FilterOption = "title" | "genre";
 
-export interface MovieListPageTemplateProps extends BaseMovieListProps {
+export interface MovieListPageTemplateProps
+  extends BaseMovieListProps {
   title: string;
 }
 
-export type MovieReviewsProps = paths["/3/movie/{movie_id}/reviews"]["get"]["responses"][200]["content"]["application/json"];
+export type MovieReviewsProps =
+  paths["/3/movie/{movie_id}/reviews"]["get"]["responses"][200]["content"]["application/json"];
 
-export type MovieReviewProps = NonNullable<MovieReviewsProps["results"]>[number];
+export type MovieReviewProps =
+  NonNullable<MovieReviewsProps["results"]>[number];
 
