@@ -46,3 +46,27 @@ export const getMovieImages = (
         return json.results;
       });
   };
+
+  export const getPopularPeople = (page = 1) => {
+  return fetch(
+    `https://api.themoviedb.org/3/person/popular?api_key=${
+      import.meta.env.VITE_TMDB_KEY
+    }&language=en-US&page=${page}`
+  ).then((res) => res.json());
+};
+
+export const getPersonDetails = (id: string | number) => {
+  return fetch(
+    `https://api.themoviedb.org/3/person/${id}?api_key=${
+      import.meta.env.VITE_TMDB_KEY
+    }&language=en-US`
+  ).then((res) => res.json());
+};
+
+export const getPersonMovieCredits = (id: string | number) => {
+  return fetch(
+    `https://api.themoviedb.org/3/person/${id}/movie_credits?api_key=${
+      import.meta.env.VITE_TMDB_KEY
+    }&language=en-US`
+  ).then((res) => res.json());
+};
