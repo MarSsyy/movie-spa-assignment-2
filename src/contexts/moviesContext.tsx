@@ -48,9 +48,9 @@ const MoviesContextProvider = ({
   const [favourites, setFavourites] =
     useState<number[]>([]);
 
-  const [reviews, setReviews] = useState<
-    Review[]
-  >([]);
+  const [, setReviews] = useState<
+  Review[]
+>([]);
 
   const addToFavourites = useCallback(
     (movie: DiscoverMovieOverviewProps) => {
