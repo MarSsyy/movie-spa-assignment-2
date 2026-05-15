@@ -1,10 +1,14 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { createRoot } from "react-dom/client";
+import HomePage from "./pages/HomePage";
+import {sampleMovieDetails}  from './data/sampleData'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+const movies = [sampleMovieDetails, sampleMovieDetails, sampleMovieDetails, sampleMovieDetails, sampleMovieDetails, sampleMovieDetails, sampleMovieDetails];
+
+const App = () => {
+  return (
+      <HomePage movies={movies} />
+  );
+};
+
+const rootElement = createRoot(document.getElementById("root")!); 
+rootElement.render(<App />);
