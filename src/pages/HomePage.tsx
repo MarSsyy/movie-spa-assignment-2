@@ -1,17 +1,23 @@
-import { useState, useEffect } from "react";  // Changed
+import { useState, useEffect } from "react";
+
 import Header from "../components/HeaderMovieList";
 import FilterCard from "../components/FilterMoviesCard";
-import Grid from "@mui/material/Grid";
 import MovieList from "../components/MovieList";
+
+import Grid from "@mui/material/Grid";
 import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
-import type { FilterOption,DiscoverMovieOverviewProps } from "../types/movieAppTypes";// Changed
- 
+
+import type {
+  FilterOption,
+  DiscoverMovieOverviewProps,
+} from "../types/movieAppTypes";
+
 const styles = {
   root: {
     padding: "20px",
   },
-   fab: {
+  fab: {
     marginTop: 8,
     position: "fixed",
     top: 2,
@@ -20,58 +26,88 @@ const styles = {
 };
 
 const MovieListPage = () => {
-  const [movies, setMovies] = useState<DiscoverMovieOverviewProps[]>([]); // Changed
+  const [movies, setMovies] = useState<
+    DiscoverMovieOverviewProps[]
+  >([]);
+
   const [titleFilter, setTitleFilter] = useState("");
   const [genreFilter, setGenreFilter] = useState("0");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const genreId = Number(genreFilter);
 
-const displayedMovies = movies
+  const displayedMovies = movies
     .filter((m: DiscoverMovieOverviewProps) => {
-      return (m.title ?? "").toLowerCase().search(titleFilter.toLowerCase()) !== -1;
+      return (
+        (m.title ?? "")
+          .toLowerCase()
+          .search(titleFilter.toLowerCase()) !== -1
+      );
     })
     .filter((m: DiscoverMovieOverviewProps) => {
-      return genreId > 0 ? m.genre_ids?.includes(genreId) : true;
+      return genreId > 0
+        ? m.genre_ids?.includes(genreId)
+        : true;
     });
 
-  const handleChange = (type: FilterOption, value: string) => {
-      if (type === "title") setTitleFilter(value);
-      else setGenreFilter(value);
-    };
+  const handleChange = (
+    type: FilterOption,
+    value: string
+  ) => {
+    if (type === "title") setTitleFilter(value);
+    else setGenreFilter(value);
+  };
+
+  const addToFavourites = (movieId: number) => {
+    const updatedMovies = movies.map(
+      (m: DiscoverMovieOverviewProps) =>
+        m.id === movieId
+          ? { ...m, favourite: true }
+          : m
+    );
+
+    setMovies(updatedMovies);
+  };
 
   useEffect(() => {
     fetch(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&page=1`
+      `https://api.themoviedb.org/3/discover/movie?api_key=${
+        import.meta.env.VITE_TMDB_KEY
+      }&language=en-US&include_adult=false&page=1`
     )
       .then((res) => res.json())
       .then((json) => {
-        //console.log(json)
         return json.results;
       })
       .then((movies) => {
         setMovies(movies);
       });
   }, []);
-  
-return (
+
+  return (
     <>
       <Grid container sx={styles.root}>
         <Grid size={12}>
           <Header title={"Home Page"} />
         </Grid>
+
         <Grid container spacing={5}>
-          <MovieList movies={displayedMovies}></MovieList>
+          <MovieList
+            movies={displayedMovies}
+            selectFavourite={addToFavourites}
+          />
         </Grid>
       </Grid>
+
       <Fab
-          color="secondary"
-          variant="extended"
-          onClick={() => setDrawerOpen(true)}
-          sx={styles.fab}
-        >
-          Filter
+        color="secondary"
+        variant="extended"
+        onClick={() => setDrawerOpen(true)}
+        sx={styles.fab}
+      >
+        Filter
       </Fab>
+
       <Drawer
         anchor="left"
         open={drawerOpen}
@@ -86,5 +122,6 @@ return (
     </>
   );
 };
+
 export default MovieListPage;
 
