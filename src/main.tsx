@@ -10,6 +10,8 @@ import {
 import HomePage from "./pages/HomePage";
 import MoviePage from "./pages/MovieDetailsPage";
 import FavouriteMoviesPage from "./pages/FavoriteMoviesPage";
+import MovieReviewPage from "./pages/MovieReviewPage";
+
 
 const App = () => {
   return (
@@ -28,6 +30,7 @@ const App = () => {
         <Route path="/movies/:id" element={<MoviePage />} />
         <Route path="/" element={<HomePage />} />
         <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/reviews/:id" element={<MovieReviewPage/>} />
       </Routes>
     </BrowserRouter>
   );
