@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import type { ChangeEvent } from "react";
 import type { SelectChangeEvent } from "@mui/material";
 import type { FilterOption } from "../types/movieAppTypes";
@@ -18,7 +18,6 @@ const styles = {
   root: {
     maxWidth: 345,
   },
-  media: { height: 300 },
   formControl: {
     margin: 1,
     minWidth: 220,
@@ -27,14 +26,16 @@ const styles = {
 };
 
 interface FilterMoviesCardProps {
+  onUserInput: (f: FilterOption, s: string) => void;
   titleFilter: string;
   genreFilter: string;
 }
 
-const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({
+const FilterMoviesCard = ({
   titleFilter,
   genreFilter,
-}) => {
+  onUserInput,
+}: FilterMoviesCardProps) => {
   const [genres, setGenres] = useState<{ id: string; name: string }[]>([
     { id: "0", name: "All" },
   ]);
@@ -58,7 +59,7 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({
     value: string
   ) => {
     e.preventDefault();
-    console.log(type, value);
+    onUserInput(type, value);
   };
 
   const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
