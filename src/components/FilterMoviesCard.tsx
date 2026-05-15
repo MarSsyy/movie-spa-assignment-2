@@ -1,8 +1,12 @@
-import { useState, useEffect } from "react";
 import type { ChangeEvent } from "react";
 import type { SelectChangeEvent } from "@mui/material";
 import type { FilterOption } from "../types/movieAppTypes";
+
+import { useQuery } from "@tanstack/react-query";
 import { getGenres } from "../api/tmdb-api";
+
+import Spinner from "./Spinner";
+
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -25,6 +29,15 @@ const styles = {
   },
 };
 
+interface Genre {
+  id: number | string;
+  name: string;
+}
+
+interface GenreData {
+  genres: Genre[];
+}
+
 interface FilterMoviesCardProps {
   onUserInput: (f: FilterOption, s: string) => void;
   titleFilter: string;
@@ -36,15 +49,16 @@ const FilterMoviesCard = ({
   genreFilter,
   onUserInput,
 }: FilterMoviesCardProps) => {
-  const [genres, setGenres] = useState<{ id: string; name: string }[]>([
-    { id: "0", name: "All" },
-  ]);
-
-  useEffect(() => {
-  getGenres().then((allGenres) => {
-    setGenres([{ id: "0", name: "All" }, ...allGenres]);
+  const { data, error, isLoading, isError } = useQuery<GenreData, Error>({
+    queryKey: ["genres"],
+    queryFn: getGenres,
   });
-}, []);
+
+  if (isLoading) return <Spinner />;
+
+  if (isError) return <h1>{error.message}</h1>;
+
+  const genres = [{ id: "0", name: "All" }, ...(data?.genres ?? [])];
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement> | SelectChangeEvent,
@@ -91,7 +105,7 @@ const FilterMoviesCard = ({
               onChange={handleGenreChange}
             >
               {genres.map((genre) => (
-                <MenuItem key={genre.id} value={genre.id}>
+                <MenuItem key={genre.id} value={String(genre.id)}>
                   {genre.name}
                 </MenuItem>
               ))}

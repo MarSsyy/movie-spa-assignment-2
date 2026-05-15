@@ -1,33 +1,53 @@
-import { useState, useEffect } from "react";
 import PageTemplate from "../components/TemplateMovieListPage";
-import type { DiscoverMovieOverviewProps } from "../types/movieAppTypes";
+
+import type {
+  DiscoverMovieOverviewProps,
+} from "../types/movieAppTypes";
+
+import { getMovies } from "../api/tmdb-api";
+
+import { useQuery } from "@tanstack/react-query";
+
+import Spinner from "../components/Spinner";
 
 const HomePage = () => {
-  const [movies, setMovies] = useState<DiscoverMovieOverviewProps[]>([]);
+  const {
+    data,
+    error,
+    isLoading,
+    isError,
+  } = useQuery<
+    DiscoverMovieOverviewProps[],
+    Error
+  >({
+    queryKey: ["discover"],
+    queryFn: getMovies,
+  });
 
-  const favourites = movies.filter((m) => m.favourite);
-  localStorage.setItem("favourites", JSON.stringify(favourites));
+  if (isLoading) {
+    return <Spinner />;
+  }
 
-  const addToFavourites = (movieId: number) => {
-    const updatedMovies = movies.map((m: DiscoverMovieOverviewProps) =>
-      m.id === movieId ? { ...m, favourite: true } : m
-    );
+  if (isError) {
+    return <h1>{error.message}</h1>;
+  }
 
-    setMovies(updatedMovies);
-  };
+  const movies = data ?? [];
 
-  useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${
-        import.meta.env.VITE_TMDB_KEY
-      }&language=en-US&include_adult=false&page=1`
-    )
-      .then((res) => res.json())
-      .then((json) => json.results)
-      .then((movies) => {
-        setMovies(movies);
-      });
-  }, []);
+  // temporary favourites storage
+  const favourites = movies.filter(
+    (m) => m.favourite
+  );
+
+  localStorage.setItem(
+    "favourites",
+    JSON.stringify(favourites)
+  );
+
+  // temporary dummy function
+  const addToFavourites = (
+    movieId: number
+  ) => true;
 
   return (
     <PageTemplate

@@ -7,45 +7,59 @@ import {
   Routes,
 } from "react-router-dom";
 
+import {
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import HomePage from "./pages/HomePage";
 import MoviePage from "./pages/MovieDetailsPage";
 import FavouriteMoviesPage from "./pages/FavoriteMoviesPage";
 import MovieReviewPage from "./pages/MovieReviewPage";
-
 import SiteHeader from "./components/SiteHeader";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 3600000,
+      refetchInterval: 3600000,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <SiteHeader />
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <SiteHeader />
 
-      <Routes>
-        <Route
-          path="/movies/favourites"
-          element={<FavouriteMoviesPage />}
-        />
+        <Routes>
+          <Route
+            path="/movies/favourites"
+            element={<FavouriteMoviesPage />}
+          />
 
-        <Route
-          path="/movies/:id"
-          element={<MoviePage />}
-        />
+          <Route
+            path="/movies/:id"
+            element={<MoviePage />}
+          />
 
-        <Route
-          path="/reviews/:id"
-          element={<MovieReviewPage />}
-        />
+          <Route
+            path="/reviews/:id"
+            element={<MovieReviewPage />}
+          />
 
-        <Route
-          path="/"
-          element={<HomePage />}
-        />
+          <Route path="/" element={<HomePage />} />
 
-        <Route
-          path="*"
-          element={<Navigate to="/" />}
-        />
-      </Routes>
-    </BrowserRouter>
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </BrowserRouter>
+
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 };
 
