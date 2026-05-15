@@ -22,6 +22,7 @@ import MovieReviewPage from "./pages/MovieReviewPage";
 import SiteHeader from "./components/SiteHeader";
 
 import MoviesContextProvider from "./contexts/moviesContext";
+import AddMovieReviewPage from "./pages/AddMovieReviewPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,6 +52,10 @@ const App = () => {
               element={<MoviePage />}
             />
 
+            <Route 
+            path="/reviews/form" element={<AddMovieReviewPage />} 
+            />
+            
             <Route
               path="/reviews/:id"
               element={<MovieReviewPage />}

@@ -1,46 +1,102 @@
-import React, { useState, useCallback } from "react";
-import type { DiscoverMovieOverviewProps } from "../types/movieAppTypes";
+import React, {
+  useState,
+  useCallback,
+} from "react";
+
+import type {
+  DiscoverMovieOverviewProps,
+  Review,
+} from "../types/movieAppTypes";
 
 type MovieContextInterface = {
   favourites: number[];
-  addToFavourites: (movie: DiscoverMovieOverviewProps) => void;
-  removeFromFavourites: (movie: DiscoverMovieOverviewProps) => void;
+
+  addToFavourites: (
+    movie: DiscoverMovieOverviewProps
+  ) => void;
+
+  removeFromFavourites: (
+    movie: DiscoverMovieOverviewProps
+  ) => void;
+
+  addReview: (
+    movie: DiscoverMovieOverviewProps,
+    review: Review
+  ) => void;
 };
 
 const initialContextState: MovieContextInterface = {
   favourites: [],
+
   addToFavourites: () => {},
+
   removeFromFavourites: () => {},
+
+  addReview: () => {},
 };
 
 export const MoviesContext =
-  React.createContext<MovieContextInterface>(initialContextState);
+  React.createContext<MovieContextInterface>(
+    initialContextState
+  );
 
 const MoviesContextProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [favourites, setFavourites] = useState<number[]>([]);
+  const [favourites, setFavourites] =
+    useState<number[]>([]);
 
-  const addToFavourites = useCallback((movie: DiscoverMovieOverviewProps) => {
-    setFavourites((prevFavourites) => {
-      if (!prevFavourites.includes(movie.id)) {
-        return [...prevFavourites, movie.id];
-      }
+  const [reviews, setReviews] = useState<
+    Review[]
+  >([]);
 
-      return prevFavourites;
-    });
-  }, []);
-
-  const removeFromFavourites = useCallback(
+  const addToFavourites = useCallback(
     (movie: DiscoverMovieOverviewProps) => {
-      setFavourites((prevFavourites) =>
-        prevFavourites.filter((movieId) => movieId !== movie.id)
-      );
+      setFavourites((prevFavourites) => {
+        if (
+          !prevFavourites.includes(movie.id)
+        ) {
+          return [
+            ...prevFavourites,
+            movie.id,
+          ];
+        }
+
+        return prevFavourites;
+      });
     },
     []
   );
+
+  const removeFromFavourites =
+    useCallback(
+      (
+        movie: DiscoverMovieOverviewProps
+      ) => {
+        setFavourites(
+          (prevFavourites) =>
+            prevFavourites.filter(
+              (movieId) =>
+                movieId !== movie.id
+            )
+        );
+      },
+      []
+    );
+
+  const addReview = (
+    movie: DiscoverMovieOverviewProps,
+    review: Review
+  ) => {
+    setReviews((prevReviews) => [
+      ...prevReviews,
+      review,
+    ]);
+
+    console.log(movie.title, review);
+  };
 
   return (
     <MoviesContext.Provider
@@ -48,6 +104,7 @@ const MoviesContextProvider = ({
         favourites,
         addToFavourites,
         removeFromFavourites,
+        addReview,
       }}
     >
       {children}

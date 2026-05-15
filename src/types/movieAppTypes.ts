@@ -49,3 +49,9 @@ export type MovieReviewsProps =
 export type MovieReviewProps =
   NonNullable<MovieReviewsProps["results"]>[number];
 
+export type Review = {
+  author: string;
+  content: string;
+  rating: number;
+  movieId: number;
+};

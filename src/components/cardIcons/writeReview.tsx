@@ -1,4 +1,6 @@
 import RateReviewIcon from "@mui/icons-material/RateReview";
+import { Link } from "react-router-dom";
+
 import type { DiscoverMovieOverviewProps } from "../../types/movieAppTypes";
 
 type Props = {
@@ -6,7 +8,16 @@ type Props = {
 };
 
 const WriteReviewIcon = ({ movie }: Props) => {
-  return <RateReviewIcon color="primary" fontSize="large" />;
+  return (
+    <Link
+      to="/reviews/form"
+      state={{
+        movieId: movie.id,
+      }}
+    >
+      <RateReviewIcon color="primary" fontSize="large" />
+    </Link>
+  );
 };
 
 export default WriteReviewIcon;
