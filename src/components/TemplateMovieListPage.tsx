@@ -10,7 +10,6 @@ import Drawer from "@mui/material/Drawer";
 
 import type {
   MovieListPageTemplateProps,
-  FilterOption,
 } from "../types/movieAppTypes";
 
 const styles = {
@@ -30,13 +29,24 @@ const MovieListPageTemplate = ({
   title,
   action,
 }: MovieListPageTemplateProps) => {
-  const [titleFilter, setTitleFilter] = useState("");
-  const [genreFilter, setGenreFilter] = useState("0");
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [titleFilter, setTitleFilter] =
+    useState("");
+
+  const [genreFilter, setGenreFilter] =
+    useState("0");
+
+  const [yearFilter, setYearFilter] =
+    useState("");
+
+  const [sortFilter, setSortFilter] =
+    useState("");
+
+  const [drawerOpen, setDrawerOpen] =
+    useState(false);
 
   const genreId = Number(genreFilter);
 
-  const displayedMovies = movies
+  let displayedMovies = movies
     .filter((m) =>
       (m.title ?? "")
         .toLowerCase()
@@ -46,16 +56,63 @@ const MovieListPageTemplate = ({
       genreId > 0
         ? m.genre_ids?.includes(genreId)
         : true
+    )
+    .filter((m) =>
+      yearFilter
+        ? m.release_date?.startsWith(
+            yearFilter
+          )
+        : true
     );
 
+  if (sortFilter === "rating") {
+    displayedMovies = [
+      ...displayedMovies,
+    ].sort(
+      (a, b) =>
+        (b.vote_average ?? 0) -
+        (a.vote_average ?? 0)
+    );
+  }
+
+  if (sortFilter === "release") {
+    displayedMovies = [
+      ...displayedMovies,
+    ].sort((a, b) =>
+      (b.release_date ?? "").localeCompare(
+        a.release_date ?? ""
+      )
+    );
+  }
+
+  if (sortFilter === "title") {
+    displayedMovies = [
+      ...displayedMovies,
+    ].sort((a, b) =>
+      (a.title ?? "").localeCompare(
+        b.title ?? ""
+      )
+    );
+  }
+
   const handleChange = (
-    type: FilterOption,
+    type: string,
     value: string
   ) => {
     if (type === "title") {
       setTitleFilter(value);
-    } else {
+    }
+
+    else if (type === "genre") {
       setGenreFilter(value);
+    }
+
+    else if (type === "year") {
+      setYearFilter(value);
+    }
+
+    else if (type === "sort") {
+      setSortFilter(value);
     }
   };
 
@@ -92,6 +149,8 @@ const MovieListPageTemplate = ({
           onUserInput={handleChange}
           titleFilter={titleFilter}
           genreFilter={genreFilter}
+          yearFilter={yearFilter}
+          sortFilter={sortFilter}
         />
       </Drawer>
     </>
