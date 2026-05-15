@@ -4,7 +4,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import MonetizationIcon from "@mui/icons-material/MonetizationOn";
 import StarRate from "@mui/icons-material/StarRate";
 import Typography from "@mui/material/Typography";
-import type { MovieDetailsProps } from "../types/movieAppTypes";
+import type{ MovieDetailsProps } from "../types/movieAppTypes";
 
 const styles = {
     chipSet: {
