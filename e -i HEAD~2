@@ -1,0 +1,25 @@
+[33m75b622c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m add login page and private route protection for my fantasy movie page
+[33mcde39b5[m add cloudfront deployment configuration
+[33mc709fd1[m add favorite actors page along with functionality
+[33m9c8b6a2[m Add movie additional movie filtering and sorting functionalities
+[33m6b48c9a[m add pagination with react query caching
+[33m0bc9b11[m Added fantasy movie form page with local storage support
+[33mc842d10[m add actor details page with movie credit links
+[33m0364f2a[m add actors API functions and actors page
+[33m94605b4[m add new review functionality
+[33me67bbb0[m Bug Fix - make action icons on movie card configurable
+[33m5faaedb[m add context for favorite movie list to be stored
+[33m8f74770[m add react-query for browser based cache
+[33m5dfba5d[m update site header
+[33m291072d[m add useMovie custom hook
+[33m708c91c[m add full review page
+[33m62cedce[m add movie review
+[33m2cc73b1[m Refactor
+[33m8b1d493[m add favorite movie page and logic
+[33m2ee532f[m add filtering of movies
+[33mf20aa9b[m add routing and live api data
+[33mf62425b[m add movie details page rendering
+[33m4318b7d[m add movie details component
+[33m1d12fee[m add homepage rendering
+[33md00ddae[m add homepage elements
+[33m0b5af84[m setup movie spa project

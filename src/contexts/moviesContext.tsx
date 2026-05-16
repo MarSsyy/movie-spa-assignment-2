@@ -48,7 +48,7 @@ const MoviesContextProvider = ({
   const [favourites, setFavourites] =
     useState<number[]>([]);
 
-  const [reviews, setReviews] = useState<
+  const [, setReviews] = useState<
     Review[]
   >([]);
 
