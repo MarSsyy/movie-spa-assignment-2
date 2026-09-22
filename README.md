@@ -218,18 +218,6 @@ npm run build
 
 ---
 
-# GitHub Repository
-
-Add your GitHub repository URL here.
-
----
-
-# CloudFront Deployment URL
-
-Add your CloudFront URL here.
-
----
-
 # AI Usage Documentation
 
 ## AI Tools Used
